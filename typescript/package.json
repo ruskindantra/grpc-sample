@@ -1,0 +1,21 @@
+{
+  "name": "grpc-typescript-sample",
+  "version": "1.0.0",
+  "description": "Simple gRPC server in TypeScript",
+  "main": "dist/server.js",
+  "scripts": {
+    "proto:gen": "protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./src/proto --ts_proto_opt=outputServices=grpc-js,env=node --proto_path=. helloworld.proto",
+    "build": "npm run proto:gen && tsc",
+    "start": "node dist/server.js",
+    "client": "node dist/client.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.14",
+    "@grpc/health-check": "^1.9.0",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "ts-proto": "^1.146.0"
+  }
+}
