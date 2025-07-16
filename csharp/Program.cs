@@ -1,4 +1,4 @@
-using GrpcService.Services;
+using GreeterGrpcServices.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 // Enable HTTP/2 without TLS
@@ -31,7 +31,9 @@ foreach (var address in addresses)
 
 // Configure endpoints
 app.MapGrpcService<GreeterService>();
-app.MapGrpcService<AlbHealthCheckService>();
 app.MapGrpcReflectionService();
+
+// Log that the application is ready
+Console.WriteLine("Application started and ready to receive requests");
 
 app.Run();

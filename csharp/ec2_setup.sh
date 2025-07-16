@@ -29,8 +29,8 @@ aws s3 cp s3://grpc-sample-deploy/grpc-app.zip ~/grpc-app.zip
 # Extract the downloaded zip file to the application directory
 unzip -o ~/grpc-app.zip -d /opt/grpc-app
 
-# Make the executable file executable
-chmod +x /opt/grpc-app/GrpcService
+# List files in the app directory
+ls -la /opt/grpc-app/
 
 # Create a systemd service file for the application
 cat << EOF | sudo tee /etc/systemd/system/grpc-app.service
@@ -41,7 +41,7 @@ After=network.target
 [Service]
 User=ec2-user
 WorkingDirectory=/opt/grpc-app
-ExecStart=/opt/grpc-app/GrpcService
+ExecStart=/opt/grpc-app/GreeterGrpcServices
 Restart=always
 RestartSec=3
 Environment="ASPNETCORE_URLS=http://0.0.0.0:8080"

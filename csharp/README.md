@@ -59,9 +59,11 @@ This is a simple gRPC application in C# that can be deployed on an EC2 instance 
 
 1. Create a target group:
    - Target type: Instances
-   - Protocol: HTTP
+   - Protocol: gRPC
    - Port: 8080
-   - Health check path: /healthz
+   - Health check path: /greeterpackage.Greeter/HealthCheck
+   - Health check protocol: gRPC
+   - Success codes: 0
    - Register your EC2 instance
 
 2. Create an Application Load Balancer:
@@ -72,9 +74,9 @@ This is a simple gRPC application in C# that can be deployed on an EC2 instance 
 
 ## Notes
 
-- The gRPC server runs on a dynamically assigned port (for local development)
-- The health check endpoint is available at /healthz on the same port
-- ASP.NET Core includes built-in gRPC health checks
+- The gRPC server runs on port 8080 in production
+- The health check endpoint is available at /greeterpackage.Greeter/HealthCheck
+- The service includes three methods: SayHello, SayHelloAgain, and HealthCheck
 
 ## Production Considerations
 

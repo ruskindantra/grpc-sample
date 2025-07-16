@@ -1,6 +1,6 @@
 using Grpc.Core;
 
-namespace GrpcService.Services;
+namespace GreeterGrpcServices.Services;
 
 public class GreeterService : Greeter.GreeterBase
 {
@@ -25,5 +25,11 @@ public class GreeterService : Greeter.GreeterBase
         {
             Message = $"Hello again, {request.Name}!"
         });
+    }
+    
+    public override Task<HealthCheckResponse> HealthCheck(HealthCheckRequest request, ServerCallContext context)
+    {
+        _logger.LogInformation("ALB Health check requested");
+        return Task.FromResult(new HealthCheckResponse());
     }
 }

@@ -11,5 +11,11 @@ fi
 echo "Testing gRPC reflection..."
 grpcurl -plaintext localhost:8080 list
 
-echo -e "\nTesting gRPC health check..."
-grpcurl -plaintext -d '{}' localhost:8080 AWS.ALB.healthcheck/Check
+echo -e "\nTesting SayHello method..."
+grpcurl -plaintext -d '{"name": "World"}' localhost:8080 greeterpackage.Greeter/SayHello
+
+echo -e "\nTesting SayHelloAgain method..."
+grpcurl -plaintext -d '{"name": "Greeter"}' localhost:8080 greeterpackage.Greeter/SayHelloAgain
+
+echo -e "\nTesting HealthCheck method..."
+grpcurl -plaintext -d '{}' localhost:8080 greeterpackage.Greeter/HealthCheck
