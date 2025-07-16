@@ -15,26 +15,33 @@ public class GreeterService : Greeter.GreeterBase
     public override async Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
     {
         string instanceIp = await InstanceMetadata.GetInstanceIpAsync();
+        string clientInfo = ClientInfo.GetClientInfo(context);
+        
         return new HelloReply
         {
-            Message = $"Hello, {request.Name}! From EC2 instance: {instanceIp}"
+            Message = $"Hello, {request.Name}!\nFrom EC2 instance: {instanceIp}\nClient Info:\n{clientInfo}"
         };
     }
 
     public override async Task<HelloReply> SayHelloAgain(HelloRequest request, ServerCallContext context)
     {
         string instanceIp = await InstanceMetadata.GetInstanceIpAsync();
+        string clientInfo = ClientInfo.GetClientInfo(context);
+        
         return new HelloReply
         {
-            Message = $"Hello again, {request.Name}! From EC2 instance: {instanceIp}"
+            Message = $"Hello again, {request.Name}!\nFrom EC2 instance: {instanceIp}\nClient Info:\n{clientInfo}"
         };
     }
     
     public override async Task<HealthCheckResponse> HealthCheck(HealthCheckRequest request, ServerCallContext context)
     {
-        _logger.LogInformation("ALB Health check requested");
         string instanceIp = await InstanceMetadata.GetInstanceIpAsync();
+        string clientInfo = ClientInfo.GetClientInfo(context);
+        
         _logger.LogInformation($"Health check from EC2 instance: {instanceIp}");
+        _logger.LogInformation($"Client info: {clientInfo}");
+        
         return new HealthCheckResponse();
     }
 }
