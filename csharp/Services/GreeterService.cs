@@ -1,4 +1,5 @@
 using Grpc.Core;
+using System.Threading.Tasks;
 
 namespace GreeterGrpcServices.Services;
 
@@ -11,25 +12,29 @@ public class GreeterService : Greeter.GreeterBase
         _logger = logger;
     }
 
-    public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+    public override async Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
     {
-        return Task.FromResult(new HelloReply
+        string instanceIp = await InstanceMetadata.GetInstanceIpAsync();
+        return new HelloReply
         {
-            Message = $"Hello, {request.Name}!"
-        });
+            Message = $"Hello, {request.Name}! From EC2 instance: {instanceIp}"
+        };
     }
 
-    public override Task<HelloReply> SayHelloAgain(HelloRequest request, ServerCallContext context)
+    public override async Task<HelloReply> SayHelloAgain(HelloRequest request, ServerCallContext context)
     {
-        return Task.FromResult(new HelloReply
+        string instanceIp = await InstanceMetadata.GetInstanceIpAsync();
+        return new HelloReply
         {
-            Message = $"Hello again, {request.Name}!"
-        });
+            Message = $"Hello again, {request.Name}! From EC2 instance: {instanceIp}"
+        };
     }
     
-    public override Task<HealthCheckResponse> HealthCheck(HealthCheckRequest request, ServerCallContext context)
+    public override async Task<HealthCheckResponse> HealthCheck(HealthCheckRequest request, ServerCallContext context)
     {
         _logger.LogInformation("ALB Health check requested");
-        return Task.FromResult(new HealthCheckResponse());
+        string instanceIp = await InstanceMetadata.GetInstanceIpAsync();
+        _logger.LogInformation($"Health check from EC2 instance: {instanceIp}");
+        return new HealthCheckResponse();
     }
 }
